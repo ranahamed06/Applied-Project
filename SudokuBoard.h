@@ -2,6 +2,7 @@
 #define SUDOKUBOARD_H
 
 #include <iostream>
+#include "BacktrackTreeNode.h"
 
 class SudokuBoard {
     static const int SIZE = 9;  // Size of the board (9x9)
