@@ -135,7 +135,6 @@ CMakeFiles/Applied_Project.dir/SudokuBoard.cpp.obj: \
  C:/Program\ Files/JetBrains/CLion\ 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/ostream.tcc \
  C:/Program\ Files/JetBrains/CLion\ 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
  C:/Program\ Files/JetBrains/CLion\ 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc \
- C:\Users\dalia\Documents\ADS\Applied-Project\vector.h \
- C:\Users\dalia\Documents\ADS\Applied-Project\vector.cpp \
- C:\Users\dalia\Documents\ADS\Applied-Project\Vector.h \
+ C:\Users\dalia\Documents\ADS\Applied-Project\myvector.h \
+ C:\Users\dalia\Documents\ADS\Applied-Project\myvector.cpp \
  C:\Users\dalia\Documents\ADS\Applied-Project\BacktrackTree.h

@@ -13,5 +13,5 @@ add_executable(Applied_Project
     SudokuBoard.h
     SudokuGame.cpp
     SudokuGame.h
-    vector.cpp
-    vector.h)
+
+        myvector.h)

@@ -224,30 +224,6 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Applied_Project.dir\build.make CMakeFiles/Applied_Project.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-vector.obj: vector.cpp.obj
-.PHONY : vector.obj
-
-# target to build an object file
-vector.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Applied_Project.dir\build.make CMakeFiles/Applied_Project.dir/vector.cpp.obj
-.PHONY : vector.cpp.obj
-
-vector.i: vector.cpp.i
-.PHONY : vector.i
-
-# target to preprocess a source file
-vector.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Applied_Project.dir\build.make CMakeFiles/Applied_Project.dir/vector.cpp.i
-.PHONY : vector.cpp.i
-
-vector.s: vector.cpp.s
-.PHONY : vector.s
-
-# target to generate assembly for a file
-vector.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Applied_Project.dir\build.make CMakeFiles/Applied_Project.dir/vector.cpp.s
-.PHONY : vector.cpp.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -269,9 +245,6 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
-	@echo ... vector.obj
-	@echo ... vector.i
-	@echo ... vector.s
 .PHONY : help
 
 

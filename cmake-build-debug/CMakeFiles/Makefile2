@@ -80,12 +80,12 @@ clean: CMakeFiles/Applied_Project.dir/clean
 CMakeFiles/Applied_Project.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Applied_Project.dir\build.make CMakeFiles/Applied_Project.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Applied_Project.dir\build.make CMakeFiles/Applied_Project.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\dalia\Documents\ADS\Applied-Project\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5,6 "Built target Applied_Project"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\dalia\Documents\ADS\Applied-Project\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4,5 "Built target Applied_Project"
 .PHONY : CMakeFiles/Applied_Project.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Applied_Project.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\dalia\Documents\ADS\Applied-Project\cmake-build-debug\CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\dalia\Documents\ADS\Applied-Project\cmake-build-debug\CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Applied_Project.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\dalia\Documents\ADS\Applied-Project\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/Applied_Project.dir/rule

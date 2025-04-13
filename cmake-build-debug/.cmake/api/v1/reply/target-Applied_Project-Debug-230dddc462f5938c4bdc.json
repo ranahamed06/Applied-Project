@@ -69,8 +69,7 @@
 				0,
 				2,
 				3,
-				5,
-				7
+				5
 			]
 		}
 	],
@@ -110,8 +109,7 @@
 				0,
 				2,
 				3,
-				5,
-				7
+				5
 			]
 		},
 		{
@@ -121,7 +119,7 @@
 				1,
 				4,
 				6,
-				8
+				7
 			]
 		}
 	],
@@ -168,13 +166,7 @@
 		},
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "vector.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "vector.h",
+			"path" : "myvector.h",
 			"sourceGroupIndex" : 1
 		}
 	],

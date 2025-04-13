@@ -5,13 +5,13 @@
 #include <iostream>
 
 
-#include "vector.h"
-#include "vector.cpp" // Include implementation file
+#include "myvector.h"
+
 class BacktrackTreeNode;
 class SudokuBoard {
 private:
     static const int SIZE = 9;  // 9*9 board
-    Vector<Vector<int>> board;      // The Sudoku grid
+    myVector<myVector<int>> board;      // The Sudoku grid
 
 
 public:

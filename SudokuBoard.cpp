@@ -5,7 +5,7 @@ using namespace std;
 // Constructor to initialize empty board (all zeros)
 SudokuBoard::SudokuBoard() {
     for (int i = 0; i < SIZE; i++) {
-        Vector<int> row;
+        myVector<int> row;
         for (int j = 0; j < SIZE; j++) {
             row.push_back(0); // Initialize all cells with 0
         }
@@ -16,7 +16,7 @@ SudokuBoard::SudokuBoard() {
 // Copy constructor for BacktrackTree integration
 SudokuBoard::SudokuBoard(const SudokuBoard& other) {
     for (int i = 0; i < SIZE; i++) {
-        Vector<int> row;
+        myVector<int> row;
         for (int j = 0; j < SIZE; j++) {
             row.push_back(other.board[i][j]); // Copy each cell
         }

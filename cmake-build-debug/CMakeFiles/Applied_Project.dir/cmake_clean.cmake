@@ -10,8 +10,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/Applied_Project.dir/SudokuGame.cpp.obj.d"
   "CMakeFiles/Applied_Project.dir/main.cpp.obj"
   "CMakeFiles/Applied_Project.dir/main.cpp.obj.d"
-  "CMakeFiles/Applied_Project.dir/vector.cpp.obj"
-  "CMakeFiles/Applied_Project.dir/vector.cpp.obj.d"
   "libApplied_Project.dll.a"
 )
 
