@@ -4,14 +4,19 @@
 
 #ifndef BACKTRACKTREE_H
 #define BACKTRACKTREE_H
+#include "SudokuBoard.h"
 
 //  This tree represents the different states of the Sudoku board during backtracking.
 //  Each node holds a state, and child nodes represent decisions (placing a value in a cell).
 
+<<<<<<< Updated upstream
 #pragma once
 
 class SudokuBoard; // Forward declaration
 
+=======
+class SudokuBoard;  // forward declaration
+>>>>>>> Stashed changes
 class BacktrackTreeNode
 {
 public:

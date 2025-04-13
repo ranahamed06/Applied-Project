@@ -1,0 +1,3 @@
+C:/Users/dalia/Documents/ADS/Applied-Project/cmake-build-debug/CMakeFiles/Applied_Project.dir
+C:/Users/dalia/Documents/ADS/Applied-Project/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/dalia/Documents/ADS/Applied-Project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
