@@ -23,13 +23,7 @@ SudokuBoard::SudokuBoard(const SudokuBoard& other) {
     }
 }
 
-SudokuBoard::SudokuBoard(const SudokuBoard& other) {
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            board[i][j] = other.board[i][j];
-        }
-    }
-}
+
 
 // Display the current board
 void SudokuBoard::printBoard() const {
@@ -121,7 +115,6 @@ bool SudokuBoard::isComplete() const {
             if (board[r][c] == 0) return false;
         }
     }
-<<<<<<< Updated upstream
 }
 
 bool SudokuBoard::solveWithTree() {
@@ -161,7 +154,11 @@ bool SudokuBoard::solveRecursive(BacktrackTreeNode* node) {
 
     return false;  // Trigger backtracking
 }
-=======
-    return true;
+
+bool SudokuBoard::generateSolvedBoard() {
+  solveSudoku();
 }
->>>>>>> Stashed changes
+void SudokuBoard::makeMove(int row, int col, int num) {
+  setCell(row, col, num);
+}
+

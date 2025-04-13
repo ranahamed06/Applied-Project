@@ -9,15 +9,13 @@
 //  This tree represents the different states of the Sudoku board during backtracking.
 //  Each node holds a state, and child nodes represent decisions (placing a value in a cell).
 
-<<<<<<< Updated upstream
+
 #pragma once
 
 class SudokuBoard; // Forward declaration
 
-=======
->>>>>>> Stashed changes
-class BacktrackTreeNode
-{
+
+class BacktrackTreeNode{
 public:
     SudokuBoard* boardState;           // Pointer to board state at this node
     BacktrackTreeNode* parent;         // Pointer to parent node
