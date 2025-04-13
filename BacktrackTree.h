@@ -15,7 +15,6 @@
 class SudokuBoard; // Forward declaration
 
 =======
-class SudokuBoard;  // forward declaration
 >>>>>>> Stashed changes
 class BacktrackTreeNode
 {
