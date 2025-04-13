@@ -1,4 +1,5 @@
 #include "SudokuBoard.h"
+#include "BacktrackTree.h"
 using namespace std;
 
 // Constructor to initialize empty board (all zeros)
@@ -115,6 +116,7 @@ bool SudokuBoard::isComplete() const {
             if (board[r][c] == 0) return false;
         }
     }
+    return true;
 }
 
 bool SudokuBoard::solveWithTree() {
@@ -156,7 +158,7 @@ bool SudokuBoard::solveRecursive(BacktrackTreeNode* node) {
 }
 
 bool SudokuBoard::generateSolvedBoard() {
-  solveSudoku();
+  return solveSudoku();
 }
 void SudokuBoard::makeMove(int row, int col, int num) {
   setCell(row, col, num);

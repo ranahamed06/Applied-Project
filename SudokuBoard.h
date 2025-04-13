@@ -7,11 +7,7 @@
 
 #include "vector.h"
 #include "vector.cpp" // Include implementation file
-
-
-
-
-
+class BacktrackTreeNode;
 class SudokuBoard {
 private:
     static const int SIZE = 9;  // 9*9 board
