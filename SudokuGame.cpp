@@ -76,13 +76,14 @@ void SudokuGame::initializePuzzle() {
 }
 
 void SudokuGame::autoSolve() {
-    if (board.solveSudoku()) {
-        cout << "Sudoku puzzle solved!" << endl;
+    if (board.solveWithTree()) {
+        cout << "Sudoku puzzle solved using backtracking tree!" << endl;
         board.printBoard();  // Show the solved board
     } else {
         cout << "No solution exists for the given puzzle." << endl;
     }
 }
+
 
 // Function to generate a new random puzzle
 void SudokuGame::generateRandomPuzzle(int difficulty) {
