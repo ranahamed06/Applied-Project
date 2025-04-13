@@ -15,3 +15,47 @@ BacktrackTreeNode::BacktrackTreeNode(SudokuBoard* state, BacktrackTreeNode* pare
 
     children = new BacktrackTreeNode*[capacity];
 }
+
+BacktrackTreeNode::~BacktrackTreeNode() {
+    delete boardState;
+
+    for (int i = 0; i < numChildren; i++) {
+        delete children[i];
+    }
+    delete[] children;
+}
+
+void BacktrackTreeNode::addChild(SudokuBoard* childState) {
+    // Resize children array if full
+    if (numChildren >= capacity) {
+        capacity *= 2;
+        BacktrackTreeNode** newChildren = new BacktrackTreeNode*[capacity];
+        for (int i = 0; i < numChildren; i++) {
+            newChildren[i] = children[i];
+        }
+        delete[] children;
+        children = newChildren;
+    }
+
+    BacktrackTreeNode* childNode = new BacktrackTreeNode(childState, this);
+    children[numChildren++] = childNode;
+}
+
+SudokuBoard* BacktrackTreeNode::getBoard() {
+    return boardState;
+}
+
+BacktrackTreeNode* BacktrackTreeNode::getParent() {
+    return parent;
+}
+
+BacktrackTreeNode* BacktrackTreeNode::getChild(int index) {
+    if (index >= 0 && index < numChildren) {
+        return children[index];
+    }
+    return nullptr;
+}
+
+int BacktrackTreeNode::getNumChildren() const {
+    return numChildren;
+}
