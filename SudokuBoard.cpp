@@ -23,6 +23,14 @@ SudokuBoard::SudokuBoard() {
     }
 }
 
+SudokuBoard::SudokuBoard(const SudokuBoard& other) {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            board[i][j] = other.board[i][j];
+        }
+    }
+}
+
 // Display the current board
 void SudokuBoard::printBoard() {
     for (int r = 0; r < SIZE; r++) {
@@ -153,3 +161,40 @@ void SudokuBoard::clearBoard() {
     }
 }
 
+bool SudokuBoard::solveWithTree() {
+    BacktrackTreeNode* root = new BacktrackTreeNode(this, nullptr);
+    bool solved = solveRecursive(root);
+    if (solved) {
+        BacktrackTreeNode* current = root;
+        while (current->getNumChildren() > 0) {
+            current = current->getChild(0);  // follow path
+        }
+        *this = *(current->getBoard());  // Copy solved board into the current one
+    }
+    delete root;
+    return solved;
+}
+
+
+bool SudokuBoard::solveRecursive(BacktrackTreeNode* node) {
+    SudokuBoard* currentBoard = node->getBoard();
+    int row, col;
+
+    if (!currentBoard->findEmptyCell(row, col)) {
+        return true;  // Board is solved
+    }
+
+    for (int num = 1; num <= 9; ++num) {
+        if (currentBoard->isValidMove(row, col, num)) {
+            SudokuBoard nextState = *currentBoard;  // Copy current board
+            nextState.setCell(row, col, num);
+
+            node->addChild(&nextState);  // Add to tree
+            if (solveRecursive(node->getChild(node->getNumChildren() - 1))) {
+                return true;  // Found solution down this path
+            }
+        }
+    }
+
+    return false;  // Trigger backtracking
+}
