@@ -8,11 +8,13 @@ class SudokuBoard {
     int board[SIZE][SIZE];      // The Sudoku grid
 public:
     SudokuBoard();  // Constructor to initialize the board
+    SudokuBoard(const SudokuBoard& other); 
     void setCell(int row, int col, int value);  // Declaration of the setCell function
     void printBoard();  // Display the current board
     bool isValidMove(int row, int col, int num);  // Validate a move
     bool findEmptyCell(int &row, int &col);
     bool solveSudoku();
+    bool solveWithTree(); 
     bool isComplete();  // Check if the board is complete (no empty cells)
     void makeMove(int row, int col, int num);  // Place a number in a 
     // Clears the board
