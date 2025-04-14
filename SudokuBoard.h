@@ -11,15 +11,15 @@ class BacktrackTreeNode;
 class SudokuBoard {
 private:
     static const int SIZE = 9;  // 9*9 board
-    myVector<myVector<int>> board;      // The Sudoku grid
+    myVector<myVector<int>> board;      // The Sudoku grid - 2D vector
 
 
 public:
     SudokuBoard();  // Constructor to initialize the board
-    SudokuBoard(const SudokuBoard& other); // Copy constructor
+    SudokuBoard(const SudokuBoard& other); // Copy constructor (create a copy of an existing board)
 
     
-    // functons 
+    // functions
     void printBoard() const;  // Display the current board
     
         //setter and getter
