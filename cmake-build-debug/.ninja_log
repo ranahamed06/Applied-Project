@@ -1,6 +1,0 @@
-# ninja log v6
-26	436	7662656210461105	CMakeFiles/Applied_Project.dir/vector.cpp.obj	baab0680a3dcc7be
-10	440	7662656210301040	CMakeFiles/Applied_Project.dir/main.cpp.obj	dd8c2e7001951f5b
-19	445	7662656210390744	CMakeFiles/Applied_Project.dir/SudokuGame.cpp.obj	91d025a8eae89e7
-14	460	7662656210336054	CMakeFiles/Applied_Project.dir/SudokuBoard.cpp.obj	2665ed1ddd090579
-8	267	7662661369823889	CMakeFiles/Applied_Project.dir/BacktrackTree.cpp.obj	e9666ee372447ae9
