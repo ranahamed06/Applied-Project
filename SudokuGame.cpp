@@ -1,9 +1,7 @@
-//
-// Created by Malak Abdelhalim on 04/05/2025.
-//
 
 #include "SudokuGame.h"
 #include <chrono>
+
 using namespace std;
 using namespace std::chrono;
 // Constructor

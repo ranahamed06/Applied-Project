@@ -1,6 +1,3 @@
-//
-// Created by Malak Abdelhalim on 04/05/2025.
-//
 
 #ifndef SUDOKUGAME_H
 #define SUDOKUGAME_H

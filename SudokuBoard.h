@@ -1,6 +1,3 @@
-//
-// Created by Malak Abdelhalim on 04/05/2025.
-//
 
 #ifndef SUDOKUBOARD_H
 #define SUDOKUBOARD_H
