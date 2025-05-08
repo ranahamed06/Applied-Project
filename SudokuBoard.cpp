@@ -181,8 +181,8 @@ int SudokuBoard::getEmptyCount() const {
 
 // Generate a complete valid Sudoku board (fully filled)
 void SudokuBoard::generateCompleteBoard() {
-    clear();
-    solve();
+    clear(); //removes what the player have done
+    solve(); // solves the board
 }
 
 // Remove cells to create a puzzle of the specified difficulty
@@ -190,29 +190,27 @@ void SudokuBoard::createPuzzle(int difficulty) {
     // First, generate a complete valid board
     generateCompleteBoard();
 
-    // Then, remove cells based on difficulty
+    // Then, remove cells based on difficulty (More removed cells -> harder puzzle)
     int cellsToRemove;
     switch (difficulty) {
         case 1: // Easy
-            cellsToRemove = 40; // Leaves about 41 clues
+            cellsToRemove = 40; // Leaves about 41 clues (easy)
         break;
         case 2: // Medium
-            cellsToRemove = 50; // Leaves about 31 clues
+            cellsToRemove = 50; // Leaves about 31 clues (medium)
         break;
         case 3: // Hard
-            cellsToRemove = 60; // Leaves about 21 clues
+            cellsToRemove = 60; // Leaves about 21 clues (hard)
         break;
         default:
             cellsToRemove = 45;
     }
 
-    // Make a copy of the board to test solutions
-    SudokuBoard tempBoard;
-
     // Remember which cells have been removed
-    bool removed[SIZE][SIZE] = {{false}};
+    // keeps track of which cells have already been removed to avoid removing the same cell multiple times
+    bool removed[SIZE][SIZE] = {{false}}; // unspecified elements are initialized as false (not removed)
 
-    // Remove cells randomly while ensuring unique solution
+    // Remove cells randomly while ensuring puzzle is solvable and has a unique solution
     while (cellsToRemove > 0) {
         int row = std::rand() % SIZE;
         int col = std::rand() % SIZE;
@@ -227,11 +225,12 @@ void SudokuBoard::createPuzzle(int difficulty) {
         grid[row][col].setValue(0);
         removed[row][col] = true;
 
-        // Now check that the puzzle has a unique solution
-        // For simplicity, we'll just check that the current removal doesn't
-        // make the puzzle unsolvable
+        // Make a copy of the board to test whether the puzzle is still solvable after removal
+        SudokuBoard tempBoard;
 
-        // Copy the current board
+        // check that the current removal doesn't make the puzzle unsolvable
+
+        // Copy the current state of the board
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) {
                 tempBoard.setValue(r, c, grid[r][c].getValue());
@@ -242,13 +241,16 @@ void SudokuBoard::createPuzzle(int difficulty) {
         if (tempBoard.solve()) {
             cellsToRemove--;
         } else {
-            // Restore the cell
+            // Restore the cell (undo removal)
             grid[row][col].setValue(temp);
             removed[row][col] = false;
         }
     }
 
-    // Set all remaining cells as fixed
+    // After all removals,
+    // Set all remaining cells as fixed (can’t be changed by the player)
+
+
     for (int row = 0; row < SIZE; row++) {
         for (int col = 0; col < SIZE; col++) {
             if (grid[row][col].getValue() != 0) {
