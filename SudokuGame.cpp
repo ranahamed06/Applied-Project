@@ -1,6 +1,3 @@
-//
-// Created by Malak Abdelhalim on 04/05/2025.
-//
 
 #include "SudokuGame.h"
 using namespace std;

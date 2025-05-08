@@ -1,4 +1,4 @@
-# Install script for directory: /Users/malakabdelhalim/CLionProjects/untitled
+# Install script for directory: /Users/malakabdelhalim/Desktop/uni/8. spring 2025/csce2211/Applied-Project
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -52,6 +52,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "/Users/malakabdelhalim/CLionProjects/untitled/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/Users/malakabdelhalim/Desktop/uni/8. spring 2025/csce2211/Applied-Project/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

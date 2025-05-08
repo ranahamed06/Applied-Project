@@ -1,0 +1,6 @@
+# ninja log v6
+10	951	1746372885168689940	CMakeFiles/untitled.dir/Cell.cpp.o	cb109015f0dc85ad
+952	1742	1746372886111670574	CMakeFiles/untitled.dir/SudokuBoard.cpp.o	618ae9dd793324c8
+7	6230	1746372885163595810	CMakeFiles/untitled.dir/main.cpp.o	4c1cdaf4316e8b2b
+14	6849	1746372885172039680	CMakeFiles/untitled.dir/SudokuGame.cpp.o	144b9a9b6786b64e
+6849	7116	1746372892008034779	untitled	211fae67d814d364

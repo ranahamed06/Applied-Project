@@ -1,3 +1,3 @@
-/Users/malakabdelhalim/CLionProjects/untitled/cmake-build-debug/CMakeFiles/untitled.dir
-/Users/malakabdelhalim/CLionProjects/untitled/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/malakabdelhalim/CLionProjects/untitled/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/malakabdelhalim/Desktop/uni/8. spring 2025/csce2211/Applied-Project/cmake-build-debug/CMakeFiles/untitled.dir
+/Users/malakabdelhalim/Desktop/uni/8. spring 2025/csce2211/Applied-Project/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/malakabdelhalim/Desktop/uni/8. spring 2025/csce2211/Applied-Project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
