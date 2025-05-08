@@ -1,7 +1,8 @@
 
 #include "SudokuGame.h"
+#include <chrono>
 using namespace std;
-
+using namespace std::chrono;
 // Constructor
 SudokuGame::SudokuGame() : gameOver(false), moves(0) {
     cout << "\n===================================\n";
@@ -384,7 +385,6 @@ void SudokuGame::run() {
                     cin.get();
                     break;
 
-
                 case 's':
                 case 'S':
                     // Solve the puzzle
@@ -395,6 +395,17 @@ void SudokuGame::run() {
 
                         if (confirm == 'y' || confirm == 'Y') {
                             saveCurrentState();
+                            
+        // Start timing
+        auto start = std::chrono::steady_clock::now();
+
+        if (board.solve()) {
+            // End timing
+            auto end = std::chrono::steady_clock::now();
+            std::chrono::duration<double> elapsed = end - start;
+
+            cout << "Puzzle solved in " << elapsed.count() << " seconds.\n";
+        }
                             if (board.solve()) {
                                 cout << "Puzzle solved!\n";
                                 // Display the solved board
