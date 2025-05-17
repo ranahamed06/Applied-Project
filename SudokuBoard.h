@@ -1,3 +1,6 @@
+//
+// Created by Malak Abdelhalim on 04/05/2025.
+//
 
 #ifndef SUDOKUBOARD_H
 #define SUDOKUBOARD_H
@@ -10,7 +13,7 @@ private:
     static const int SIZE = 9;
     static const int BOX_SIZE = 3;
     Cell grid[SIZE][SIZE];
-
+    static int recursionDepth;
     bool solveRecursive(int row, int col);
 
 public:
