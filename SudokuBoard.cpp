@@ -1,5 +1,10 @@
+//
+// Created by Malak Abdelhalim on 04/05/2025.
+//
 
 #include "SudokuBoard.h"
+#include <iostream>
+using namespace std;
 
 // Initialize the grid
 SudokuBoard::SudokuBoard() {
@@ -130,8 +135,9 @@ void SudokuBoard::refreshCandidates() {
         }
     }
 }
-
+/*
 bool SudokuBoard::solveRecursive(int row, int col) {
+
     // If we've filled the entire board, we're done
     if (row >= SIZE)
       return true;
@@ -160,10 +166,58 @@ bool SudokuBoard::solveRecursive(int row, int col) {
     return false;
 }
 
-bool SudokuBoard::solve() {
-    return solveRecursive(0, 0);
+*/// Class-level variable to track recursion calls
+int SudokuBoard::recursionDepth = 0;
+bool SudokuBoard::solveRecursive(int row, int col) {
+    // Increment recursion depth at the start of each function call
+    recursionDepth++;
+
+    // If we've filled all rows, the puzzle is solved
+    if (row == SIZE) {
+        return true;
+    }
+
+    // Move to the next row if we've reached the end of the current one
+    if (col == SIZE) {
+        return solveRecursive(row + 1, 0);
+    }
+
+    // If the current cell is not empty, skip it (move to the next one)
+    if (grid[row][col].getValue() != 0) {
+        return solveRecursive(row, col + 1);  // Move to the next column
+    }
+
+    // Try placing a number 1-9 in the current empty cell
+    for (int value = 1; value <= 9; value++) {
+        if (isValid(row, col, value)) {
+            grid[row][col].setValue(value);  // Place the number
+
+            // Recurse to the next empty cell
+            if (solveRecursive(row, col + 1)) {
+                return true;
+            }
+
+            // Backtrack if placing `num` doesn't lead to a solution
+            grid[row][col].setValue(0);
+        }
+    }
+
+    // If no valid number can be placed, return false (backtracking)
+    return false;
 }
 
+bool SudokuBoard::solve() {
+    recursionDepth = 0;
+    
+    
+    // Call the recursive solve function starting from the top-left corner
+    bool solve = solveRecursive(0, 0);
+
+    // After the puzzle is solved, print the total recursion depth
+    std::cout << "Total recursion depth: " << recursionDepth << std::endl;
+    
+    return solve;
+}
 // Returns the number of empty cells
 int SudokuBoard::getEmptyCount() const {
     int count = 0;
@@ -178,8 +232,8 @@ int SudokuBoard::getEmptyCount() const {
 
 // Generate a complete valid Sudoku board (fully filled)
 void SudokuBoard::generateCompleteBoard() {
-    clear(); //removes what the player have done
-    solve(); // solves the board
+    clear();
+    solve();
 }
 
 // Remove cells to create a puzzle of the specified difficulty
@@ -187,27 +241,29 @@ void SudokuBoard::createPuzzle(int difficulty) {
     // First, generate a complete valid board
     generateCompleteBoard();
 
-    // Then, remove cells based on difficulty (More removed cells -> harder puzzle)
+    // Then, remove cells based on difficulty
     int cellsToRemove;
     switch (difficulty) {
         case 1: // Easy
-            cellsToRemove = 40; // Leaves about 41 clues (easy)
+            cellsToRemove = 40; // Leaves about 41 clues
         break;
         case 2: // Medium
-            cellsToRemove = 50; // Leaves about 31 clues (medium)
+            cellsToRemove = 50; // Leaves about 31 clues
         break;
         case 3: // Hard
-            cellsToRemove = 60; // Leaves about 21 clues (hard)
+            cellsToRemove = 60; // Leaves about 21 clues
         break;
         default:
             cellsToRemove = 45;
     }
 
-    // Remember which cells have been removed
-    // keeps track of which cells have already been removed to avoid removing the same cell multiple times
-    bool removed[SIZE][SIZE] = {{false}}; // unspecified elements are initialized as false (not removed)
+    // Make a copy of the board to test solutions
+    SudokuBoard tempBoard;
 
-    // Remove cells randomly while ensuring puzzle is solvable and has a unique solution
+    // Remember which cells have been removed
+    bool removed[SIZE][SIZE] = {{false}};
+
+    // Remove cells randomly while ensuring unique solution
     while (cellsToRemove > 0) {
         int row = std::rand() % SIZE;
         int col = std::rand() % SIZE;
@@ -222,12 +278,11 @@ void SudokuBoard::createPuzzle(int difficulty) {
         grid[row][col].setValue(0);
         removed[row][col] = true;
 
-        // Make a copy of the board to test whether the puzzle is still solvable after removal
-        SudokuBoard tempBoard;
+        // Now check that the puzzle has a unique solution
+        // For simplicity, we'll just check that the current removal doesn't
+        // make the puzzle unsolvable
 
-        // check that the current removal doesn't make the puzzle unsolvable
-
-        // Copy the current state of the board
+        // Copy the current board
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) {
                 tempBoard.setValue(r, c, grid[r][c].getValue());
@@ -238,16 +293,13 @@ void SudokuBoard::createPuzzle(int difficulty) {
         if (tempBoard.solve()) {
             cellsToRemove--;
         } else {
-            // Restore the cell (undo removal)
+            // Restore the cell
             grid[row][col].setValue(temp);
             removed[row][col] = false;
         }
     }
 
-    // After all removals,
-    // Set all remaining cells as fixed (can’t be changed by the player)
-
-
+    // Set all remaining cells as fixed
     for (int row = 0; row < SIZE; row++) {
         for (int col = 0; col < SIZE; col++) {
             if (grid[row][col].getValue() != 0) {
@@ -279,4 +331,5 @@ void SudokuBoard::loadState(const int savedGrid[SIZE][SIZE]) {
 
     refreshCandidates();
 }
+
 
