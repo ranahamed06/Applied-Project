@@ -400,16 +400,16 @@ void SudokuGame::run() {
         // Start timing
         auto start = std::chrono::steady_clock::now();
 
-        if (board.solve()) {
-            // End timing
-            auto end = std::chrono::steady_clock::now();
-            std::chrono::duration<double> elapsed = end - start;
 
-            cout << "Puzzle solved in " << elapsed.count() << " seconds.\n";
-        }
-                            if (board.solve()) {
+        bool solved = board.solve();
+                            if (solved) {
+                                // End timing
+                                auto end = chrono::steady_clock::now();
+                                chrono::duration<double> elapsed = end - start;
+                            
+                                cout << "Puzzle solved in " << elapsed.count() << " seconds.\n";
+                            
                                 cout << "Puzzle solved!\n";
-                                // Display the solved board
                                 displayBoard();
                                 cout << "Press Enter to continue...";
                                 cin.ignore(10000, '\n');
