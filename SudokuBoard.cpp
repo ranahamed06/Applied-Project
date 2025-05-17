@@ -167,8 +167,13 @@ bool SudokuBoard::solveRecursive(int row, int col) {
 }
 
 */// Class-level variable to track recursion calls
-int SudokuBoard::recursionDepth = 0;
-bool SudokuBoard::solveRecursive(int row, int col) {
+int SudokuBoard::recursionCalls = 0;
+int SudokuBoard::currentDepth = 0;
+int SudokuBoard::maxRecursionDepth = 0;
+
+
+//int SudokuBoard::recursionDepth = 0;
+/*bool SudokuBoard::solveRecursive(int row, int col) {
     // Increment recursion depth at the start of each function call
     recursionDepth++;
 
@@ -204,9 +209,49 @@ bool SudokuBoard::solveRecursive(int row, int col) {
 
     // If no valid number can be placed, return false (backtracking)
     return false;
+}*/
+
+bool SudokuBoard::solveRecursive(int row, int col) {
+    recursionCalls++;
+    currentDepth++;
+    if (currentDepth > maxRecursionDepth)
+        maxRecursionDepth = currentDepth;
+
+    if (row == SIZE) {
+        currentDepth--;
+        return true;
+    }
+
+    if (col == SIZE) {
+        bool result = solveRecursive(row + 1, 0);
+        currentDepth--;
+        return result;
+    }
+
+    if (grid[row][col].getValue() != 0) {
+        bool result = solveRecursive(row, col + 1);
+        currentDepth--;
+        return result;
+    }
+
+    for (int value = 1; value <= 9; value++) {
+        if (isValid(row, col, value)) {
+            grid[row][col].setValue(value);
+
+            if (solveRecursive(row, col + 1)) {
+                currentDepth--;
+                return true;
+            }
+
+            grid[row][col].setValue(0);
+        }
+    }
+
+    currentDepth--;
+    return false;
 }
 
-bool SudokuBoard::solve() {
+/*bool SudokuBoard::solve() {
     recursionDepth = 0;
     
     
@@ -217,7 +262,20 @@ bool SudokuBoard::solve() {
     std::cout << "Total recursion depth: " << recursionDepth << std::endl;
     
     return solve;
+}*/
+bool SudokuBoard::solve() {
+    recursionCalls = 0;
+    currentDepth = 0;
+    maxRecursionDepth = 0;
+
+    bool solved = solveRecursive(0, 0);
+
+    cout << "Total recursion calls: " << recursionCalls << endl;
+    cout << "Maximum recursion depth: " << maxRecursionDepth << endl;
+
+    return solved;
 }
+
 // Returns the number of empty cells
 int SudokuBoard::getEmptyCount() const {
     int count = 0;
