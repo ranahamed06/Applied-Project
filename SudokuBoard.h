@@ -13,7 +13,11 @@ private:
     static const int SIZE = 9;
     static const int BOX_SIZE = 3;
     Cell grid[SIZE][SIZE];
-    static int recursionDepth;
+    //static int recursionDepth;
+    static int recursionCalls;       // Total number of calls
+    static int currentDepth;         // Current depth in the call stack
+    static int maxRecursionDepth;    // Maximum depth reached
+
     bool solveRecursive(int row, int col);
 
 public:
