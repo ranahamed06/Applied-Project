@@ -212,44 +212,44 @@ int SudokuBoard::maxRecursionDepth = 0;
 }*/
 
 bool SudokuBoard::solveRecursive(int row, int col) {
-    recursionCalls++;
-    currentDepth++;
-    if (currentDepth > maxRecursionDepth)
-        maxRecursionDepth = currentDepth;
-
+    // If we reach the end of the row, move to the next row
     if (row == SIZE) {
-        currentDepth--;
         return true;
     }
 
+    // If we reach the end of the column, move to the next row, first column
     if (col == SIZE) {
-        bool result = solveRecursive(row + 1, 0);
-        currentDepth--;
-        return result;
+        return solveRecursive(row + 1, 0);
     }
 
+    // If the current cell is already filled, skip it
     if (grid[row][col].getValue() != 0) {
-        bool result = solveRecursive(row, col + 1);
-        currentDepth--;
-        return result;
+        return solveRecursive(row, col + 1);
     }
 
+    // Use Minimum Remaining Values (MRV) Heuristic
+    std::pair<int, int> nextCell = findCellWithFewestChoices();
+    row = nextCell.first;
+    col = nextCell.second;
+
+    // Try placing a number from 1 to 9
     for (int value = 1; value <= 9; value++) {
         if (isValid(row, col, value)) {
-            grid[row][col].setValue(value);
+            grid[row][col].setValue(value);  // Place the number
 
+            // Recurse to the next empty cell
             if (solveRecursive(row, col + 1)) {
-                currentDepth--;
                 return true;
             }
 
+            // Backtrack if placing `value` didn't work
             grid[row][col].setValue(0);
         }
     }
 
-    currentDepth--;
-    return false;
+    return false;  // Backtrack if no valid number can be placed
 }
+
 
 /*bool SudokuBoard::solve() {
     recursionDepth = 0;
@@ -263,6 +263,40 @@ bool SudokuBoard::solveRecursive(int row, int col) {
     
     return solve;
 }*/
+
+std::pair<int, int> SudokuBoard::findCellWithFewestChoices() {
+    int minChoices = SIZE + 1;  // More than the max possible number of choices (9)
+    int bestRow = -1;
+    int bestCol = -1;
+
+    // Iterate through all cells and find the one with the fewest valid choices
+    for (int r = 0; r < SIZE; r++) {
+        for (int c = 0; c < SIZE; c++) {
+            if (grid[r][c].getValue() == 0) {  // Check only empty cells
+                int validChoices = countValidChoices(r, c);
+                if (validChoices < minChoices) {
+                    minChoices = validChoices;
+                    bestRow = r;
+                    bestCol = c;
+                }
+            }
+        }
+    }
+
+    return {bestRow, bestCol};
+}
+int SudokuBoard::countValidChoices(int row, int col) const {
+    int count = 0;
+    for (int value = 1; value <= 9; value++) {
+        if (isValid(row, col, value)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+
+
 bool SudokuBoard::solve() {
     recursionCalls = 0;
     currentDepth = 0;
