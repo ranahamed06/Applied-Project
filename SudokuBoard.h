@@ -43,6 +43,12 @@ public:
 
     void saveState(int savedGrid[SIZE][SIZE]) const;
     void loadState(const int savedGrid[SIZE][SIZE]);
+
+    std::pair<int, int> findCellWithFewestChoices();
+
+    // Function to count the number of valid choices for a given cell
+    int countValidChoices(int row, int col) const;
+
 };
 
 #endif //SUDOKUBOARD_H
