@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include "Cell.h"
+#include "TreeNode.h"
 
 class SudokuBoard {
 private:
@@ -12,7 +13,7 @@ private:
     Cell grid[SIZE][SIZE];
 
     bool solveRecursive(int row, int col);
-
+    bool solveBacktracking(TreeNode<SudokuBoard>* currentNode);
 public:
     SudokuBoard();
 
@@ -28,6 +29,7 @@ public:
     void refreshCandidates();
 
     bool solve();
+    bool solve(char c);
 
     int getEmptyCount() const;
 

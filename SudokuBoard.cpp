@@ -1,4 +1,3 @@
-
 #include "SudokuBoard.h"
 
 // Initialize the grid
@@ -160,8 +159,49 @@ bool SudokuBoard::solveRecursive(int row, int col) {
     return false;
 }
 
+bool SudokuBoard::solveBacktracking(TreeNode<SudokuBoard>* currentNode) {
+    for (int row = 0; row < SIZE; ++row) {
+        for (int col = 0; col < SIZE; ++col) {
+            if (grid[row][col].getValue() == 0) {
+                for (int num = 1; num <= 9; ++num) {
+                    if (isValid(row, col, num)) {
+                        grid[row][col].setValue(num);
+
+                        TreeNode<SudokuBoard>* child = new TreeNode<SudokuBoard>(*this);
+                        currentNode->addChild(child);
+
+                        if (solveBacktracking(child)) {
+                            return true;
+                        }
+
+                        // Backtrack
+                        grid[row][col].setValue(0);
+                    }
+                }
+                return false; // No valid number found
+            }
+        }
+    }
+    return true; // Board filled
+}
+
 bool SudokuBoard::solve() {
-    return solveRecursive(0, 0);
+        return solveRecursive(0, 0);
+}
+
+bool SudokuBoard::solve(char c) {
+    if (c == 'v' || c == 'V')
+    {
+        return solveRecursive(0, 0);
+    }
+    if (c == 't' || c == 'T')
+    {
+        TreeNode<SudokuBoard>* root = new TreeNode<SudokuBoard>(*this);
+        bool result = solveBacktracking(root);
+        delete root; // prevent memory leak
+        return result;
+    }
+    return false; // invalid input
 }
 
 // Returns the number of empty cells
@@ -178,7 +218,7 @@ int SudokuBoard::getEmptyCount() const {
 
 // Generate a complete valid Sudoku board (fully filled)
 void SudokuBoard::generateCompleteBoard() {
-    clear(); //removes what the player have done
+    clear(); // removes what the player have done
     solve(); // solves the board
 }
 
