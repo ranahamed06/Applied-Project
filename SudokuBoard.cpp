@@ -1,10 +1,4 @@
-//
-// Created by Malak Abdelhalim on 04/05/2025.
-//
-
 #include "SudokuBoard.h"
-#include <iostream>
-using namespace std;
 
 // Initialize the grid
 SudokuBoard::SudokuBoard() {
@@ -135,81 +129,9 @@ void SudokuBoard::refreshCandidates() {
         }
     }
 }
-/*
-bool SudokuBoard::solveRecursive(int row, int col) {
-
-    // If we've filled the entire board, we're done
-    if (row >= SIZE)
-      return true;
-
-    // Calculate next cell
-    int nextRow = (col == SIZE - 1) ? row + 1 : row;
-    int nextCol = (col == SIZE - 1) ? 0 : col + 1;
-
-    // If the current cell is already filled, move to the next one
-    if (grid[row][col].getValue() != 0) {
-        return solveRecursive(nextRow, nextCol);
-    }
-
-    // Try each possible value (1-9) for the current cell
-    for (int value = 1; value <= SIZE; value++) {
-        if (isValid(row, col, value)) {
-            grid[row][col].setValue(value);
-            // Recursively solve for the next cell
-            if (solveRecursive(nextRow, nextCol))
-              return true;
-            // Backtrack if the solution doesn't work
-            grid[row][col].setValue(0);
-        }
-    }
-    // No valid value found
-    return false;
-}
-
-*/// Class-level variable to track recursion calls
 int SudokuBoard::recursionCalls = 0;
 int SudokuBoard::currentDepth = 0;
 int SudokuBoard::maxRecursionDepth = 0;
-
-
-//int SudokuBoard::recursionDepth = 0;
-/*bool SudokuBoard::solveRecursive(int row, int col) {
-    // Increment recursion depth at the start of each function call
-    recursionDepth++;
-
-    // If we've filled all rows, the puzzle is solved
-    if (row == SIZE) {
-        return true;
-    }
-
-    // Move to the next row if we've reached the end of the current one
-    if (col == SIZE) {
-        return solveRecursive(row + 1, 0);
-    }
-
-    // If the current cell is not empty, skip it (move to the next one)
-    if (grid[row][col].getValue() != 0) {
-        return solveRecursive(row, col + 1);  // Move to the next column
-    }
-
-    // Try placing a number 1-9 in the current empty cell
-    for (int value = 1; value <= 9; value++) {
-        if (isValid(row, col, value)) {
-            grid[row][col].setValue(value);  // Place the number
-
-            // Recurse to the next empty cell
-            if (solveRecursive(row, col + 1)) {
-                return true;
-            }
-
-            // Backtrack if placing `num` doesn't lead to a solution
-            grid[row][col].setValue(0);
-        }
-    }
-
-    // If no valid number can be placed, return false (backtracking)
-    return false;
-}*/
 
 bool SudokuBoard::solveRecursive(int row, int col) {
     // If we reach the end of the row, move to the next row
@@ -250,20 +172,31 @@ bool SudokuBoard::solveRecursive(int row, int col) {
     return false;  // Backtrack if no valid number can be placed
 }
 
+bool SudokuBoard::solveBacktracking(TreeNode<SudokuBoard>* currentNode) {
+    for (int row = 0; row < SIZE; ++row) {
+        for (int col = 0; col < SIZE; ++col) {
+            if (grid[row][col].getValue() == 0) {
+                for (int num = 1; num <= 9; ++num) {
+                    if (isValid(row, col, num)) {
+                        grid[row][col].setValue(num);
 
-/*bool SudokuBoard::solve() {
-    recursionDepth = 0;
-    
-    
-    // Call the recursive solve function starting from the top-left corner
-    bool solve = solveRecursive(0, 0);
+                        TreeNode<SudokuBoard>* child = new TreeNode<SudokuBoard>(*this);
+                        currentNode->addChild(child);
 
-    // After the puzzle is solved, print the total recursion depth
-    std::cout << "Total recursion depth: " << recursionDepth << std::endl;
-    
-    return solve;
-}*/
+                        if (solveBacktracking(child)) {
+                            return true;
+                        }
 
+                        // Backtrack
+                        grid[row][col].setValue(0);
+                    }
+                }
+                return false; // No valid number found
+            }
+        }
+    }
+    return true; // Board filled
+}
 std::pair<int, int> SudokuBoard::findCellWithFewestChoices() {
     int minChoices = SIZE + 1;  // More than the max possible number of choices (9)
     int bestRow = -1;
@@ -295,8 +228,6 @@ int SudokuBoard::countValidChoices(int row, int col) const {
     return count;
 }
 
-
-
 bool SudokuBoard::solve() {
     recursionCalls = 0;
     currentDepth = 0;
@@ -308,6 +239,21 @@ bool SudokuBoard::solve() {
     cout << "Maximum recursion depth: " << maxRecursionDepth << endl;
 
     return solved;
+}
+
+bool SudokuBoard::solve(char c) {
+    if (c == 'v' || c == 'V')
+    {
+        return solveRecursive(0, 0);
+    }
+    if (c == 't' || c == 'T')
+    {
+        TreeNode<SudokuBoard>* root = new TreeNode<SudokuBoard>(*this);
+        bool result = solveBacktracking(root);
+        delete root; // prevent memory leak
+        return result;
+    }
+    return false; // invalid input
 }
 
 // Returns the number of empty cells
@@ -324,8 +270,8 @@ int SudokuBoard::getEmptyCount() const {
 
 // Generate a complete valid Sudoku board (fully filled)
 void SudokuBoard::generateCompleteBoard() {
-    clear();
-    solve();
+    clear(); // removes what the player have done
+    solve(); // solves the board
 }
 
 // Remove cells to create a puzzle of the specified difficulty
@@ -333,29 +279,27 @@ void SudokuBoard::createPuzzle(int difficulty) {
     // First, generate a complete valid board
     generateCompleteBoard();
 
-    // Then, remove cells based on difficulty
+    // Then, remove cells based on difficulty (More removed cells -> harder puzzle)
     int cellsToRemove;
     switch (difficulty) {
         case 1: // Easy
-            cellsToRemove = 40; // Leaves about 41 clues
+            cellsToRemove = 40; // Leaves about 41 clues (easy)
         break;
         case 2: // Medium
-            cellsToRemove = 50; // Leaves about 31 clues
+            cellsToRemove = 50; // Leaves about 31 clues (medium)
         break;
         case 3: // Hard
-            cellsToRemove = 60; // Leaves about 21 clues
+            cellsToRemove = 60; // Leaves about 21 clues (hard)
         break;
         default:
             cellsToRemove = 45;
     }
 
-    // Make a copy of the board to test solutions
-    SudokuBoard tempBoard;
-
     // Remember which cells have been removed
-    bool removed[SIZE][SIZE] = {{false}};
+    // keeps track of which cells have already been removed to avoid removing the same cell multiple times
+    bool removed[SIZE][SIZE] = {{false}}; // unspecified elements are initialized as false (not removed)
 
-    // Remove cells randomly while ensuring unique solution
+    // Remove cells randomly while ensuring puzzle is solvable and has a unique solution
     while (cellsToRemove > 0) {
         int row = std::rand() % SIZE;
         int col = std::rand() % SIZE;
@@ -370,11 +314,12 @@ void SudokuBoard::createPuzzle(int difficulty) {
         grid[row][col].setValue(0);
         removed[row][col] = true;
 
-        // Now check that the puzzle has a unique solution
-        // For simplicity, we'll just check that the current removal doesn't
-        // make the puzzle unsolvable
+        // Make a copy of the board to test whether the puzzle is still solvable after removal
+        SudokuBoard tempBoard;
 
-        // Copy the current board
+        // check that the current removal doesn't make the puzzle unsolvable
+
+        // Copy the current state of the board
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) {
                 tempBoard.setValue(r, c, grid[r][c].getValue());
@@ -385,13 +330,16 @@ void SudokuBoard::createPuzzle(int difficulty) {
         if (tempBoard.solve()) {
             cellsToRemove--;
         } else {
-            // Restore the cell
+            // Restore the cell (undo removal)
             grid[row][col].setValue(temp);
             removed[row][col] = false;
         }
     }
 
-    // Set all remaining cells as fixed
+    // After all removals,
+    // Set all remaining cells as fixed (can’t be changed by the player)
+
+
     for (int row = 0; row < SIZE; row++) {
         for (int col = 0; col < SIZE; col++) {
             if (grid[row][col].getValue() != 0) {
@@ -423,5 +371,3 @@ void SudokuBoard::loadState(const int savedGrid[SIZE][SIZE]) {
 
     refreshCandidates();
 }
-
-
