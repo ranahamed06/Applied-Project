@@ -4,24 +4,28 @@
 
 using namespace std;
 using namespace std::chrono;
+
 // Constructor
 SudokuGame::SudokuGame() : gameOver(false), moves(0) {
     cout << "\n===================================\n";
-    cout << "===       SUDOKU GAME          ===\n";
+    cout << "===        SUDOKU GAME          ===\n";
     cout << "===================================\n";
 }
 
 void SudokuGame::displayBoard() const {
-    cout << "\n   ";
+    cout << "\n     ";
     for (int col = 0; col < SIZE; col++) {
-        cout << " " << (col + 1) << "  ";
+        if ((col + 1) % BOX_SIZE == 0) {
+            cout << (col + 1) << "    ";
+        } else
+        cout << (col + 1) << "   ";
     }
     cout << "\n   ";
 
     for (int col = 0; col < SIZE; col++) {
         cout << "----";
     }
-    cout << "-\n";
+    cout << "---\n";
 
     for (int row = 0; row < SIZE; row++) {
         cout << " " << (row + 1) << " |";
@@ -35,7 +39,7 @@ void SudokuGame::displayBoard() const {
                 if (cell.isFixed()) {
                     cout << " \033[1m" << cell.getValue() << "\033[0m |"; // Bold for fixed cells
                 } else {
-                    cout << " " << cell.getValue() << " |";
+                    cout << " " << cell.getValue() << " |"; // print user input normally
                 }
             }
 
@@ -49,27 +53,27 @@ void SudokuGame::displayBoard() const {
         for (int col = 0; col < SIZE; col++) {
             cout << "----";
         }
-        cout << "-\n";
+        cout << "---\n";
 
         if ((row + 1) % BOX_SIZE == 0 && row < SIZE - 1) {
             cout << "   ";
             for (int col = 0; col < SIZE; col++) {
                 cout << "----";
             }
-            cout << "-\n";
+            cout << "---\n";
         }
     }
 }
 
 void SudokuGame::showCandidates(int row, int col) const {
-    const Cell& cell = board.getCell(row, col);
+    const Cell& cell = board.getCell(row, col); // retrieves cell at specified position
 
     if (!cell.isEmpty()) {
         cout << "Cell already has value " << cell.getValue() << "\n";
         return;
     }
 
-    const CustomVector<int>& candidates = cell.getCandidates();
+    const CustomVector<int>& candidates = cell.getCandidates(); // retrieves reference to candidates
 
     cout << "Candidates for cell (" << (row + 1) << "," << (col + 1) << "): ";
 
@@ -78,7 +82,7 @@ void SudokuGame::showCandidates(int row, int col) const {
     } else {
         for (int i = 0; i < candidates.size(); i++) {
             cout << candidates[i];
-            if (i < candidates.size() - 1) {
+            if (i < candidates.size() - 1) { // no comma after last candidate
             cout << ", ";
             }
         }
@@ -94,6 +98,7 @@ void SudokuGame::restoreSavedState() {
     board.loadState(savedState);
 }
 
+// validates player moves
 void SudokuGame::getInput(int& row, int& col, int& value) {
     while (true) {
         cout << "Enter row (1-9): ";
@@ -103,7 +108,7 @@ void SudokuGame::getInput(int& row, int& col, int& value) {
             cin.clear();
             cin.ignore(10000, '\n');
             cout << "Invalid row. Please enter a number between 1 and 9.\n";
-            continue;
+            continue; // restarts loop
         }
 
         cout << "Enter column (1-9): ";
@@ -160,6 +165,7 @@ void SudokuGame::displayTime() const {
     cout << minutes << "m " << seconds << "s\n";
 }
 
+// suggests the correct value for the first empty cell
 void SudokuGame::displayHint() {
     // Find the first empty cell
     for (int row = 0; row < SIZE; row++) {
@@ -239,11 +245,11 @@ void SudokuGame::startNewGame() {
 }
 
 void SudokuGame::congratulate() const {
-    cout << "\n******************************\n";
+    cout << "\n******\n";
     cout << "*                            *\n";
-    cout << "*  CONGRATULATIONS! YOU WIN!  *\n";
+    cout << "  CONGRATULATIONS! YOU WIN!  \n";
     cout << "*                            *\n";
-    cout << "******************************\n\n";
+    cout << "******\n\n";
 
     time_t currentTime = time(nullptr);
     int elapsedSeconds = static_cast<int>(difftime(currentTime, startTime));
@@ -260,6 +266,7 @@ void SudokuGame::congratulate() const {
     cout << minutes << " minutes, and " << seconds << " seconds.\n\n";
 }
 
+// player interaction, game state transitions, screen updates
 void SudokuGame::run() {
     startNewGame();
 
@@ -393,38 +400,41 @@ void SudokuGame::run() {
                         cout << "Are you sure you want to solve the puzzle? (y/n): ";
                         char confirm;
                         cin >> confirm;
-
                         if (confirm == 'y' || confirm == 'Y') {
-                            saveCurrentState();
-                            
-        // Start timing
-        auto start = std::chrono::steady_clock::now();
+                            cout << "Would you like to solve the puzzle using the custom vector or the tree? enter (v/t): ";
+                            char pick;
+                            cin >> pick;
+                                saveCurrentState();
 
+                                // Start timing
+                                auto start = std::chrono::steady_clock::now();
 
-        bool solved = board.solve();
-                            if (solved) {
-                                // End timing
-                                auto end = chrono::steady_clock::now();
-                                chrono::duration<double> elapsed = end - start;
-                            
-                                cout << "Puzzle solved in " << elapsed.count() << " seconds.\n";
-                            
-                                cout << "Puzzle solved!\n";
-                                displayBoard();
-                                cout << "Press Enter to continue...";
-                                cin.ignore(10000, '\n');
-                                cin.get();
-                                gameOver = true;
-                            } else {
-                                cout << "The puzzle cannot be solved from the current state.\n";
-                                restoreSavedState();
-                                cout << "Press Enter to continue...";
-                                cin.ignore(10000, '\n');
-                                cin.get();
-                            }
+                                if (board.solve(pick)) {
+                                    // End timing
+                                    auto end = std::chrono::steady_clock::now();
+                                    std::chrono::duration<double> elapsed = end - start;
+
+                                    cout << "Puzzle solved in " << elapsed.count() << " seconds.\n";
+                                }
+                                if (board.solve(pick)) {
+                                    cout << "Puzzle solved!\n";
+                                    // Display the solved board
+                                    displayBoard();
+                                    cout << "Press Enter to continue...";
+                                    cin.ignore(10000, '\n');
+                                    cin.get();
+                                    gameOver = true;
+                                } else {
+                                    cout << "The puzzle cannot be solved from the current state.\n";
+                                    restoreSavedState();
+                                    cout << "Press Enter to continue...";
+                                    cin.ignore(10000, '\n');
+                                    cin.get();
+                                }
                         }
                     }
                     break;
+
 
                 case 'r':
                 case 'R':
@@ -472,4 +482,3 @@ void SudokuGame::run() {
 
         cout << "\nThank you for playing Sudoku!\n";
 }
-
