@@ -7,6 +7,7 @@
 #include "SudokuBoard.h"
 #include "Cell.h"
 #include "CustomVector.h"
+#include "TreeNode.h"
 
 class SudokuGame {
 private:
@@ -37,4 +38,3 @@ public:
 };
 
 #endif // SUDOKUGAME_H
-
