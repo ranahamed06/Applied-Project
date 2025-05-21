@@ -7,6 +7,7 @@ using namespace std::chrono;
 
 // Constructor
 SudokuGame::SudokuGame() : gameOver(false), moves(0) {
+    hintsUsed = 0;
     cout << "\n===================================\n";
     cout << "===        SUDOKU GAME          ===\n";
     cout << "===================================\n";
@@ -54,7 +55,7 @@ void SudokuGame::displayBoard() const {
             cout << "----";
         }
         cout << "---\n";
-
+        /*
         if ((row + 1) % BOX_SIZE == 0 && row < SIZE - 1) {
             cout << "   ";
             for (int col = 0; col < SIZE; col++) {
@@ -62,6 +63,7 @@ void SudokuGame::displayBoard() const {
             }
             cout << "---\n";
         }
+        */
     }
 }
 
@@ -173,7 +175,7 @@ void SudokuGame::displayHint() {
             if (board.getCell(row, col).isEmpty()) {
                 // Save current state
                 SudokuBoard tempBoard = board;
-
+                hintsUsed++;
                 // Try to solve the board
                 if (board.solve()) {
                     int correctValue = board.getCell(row, col).getValue();
@@ -231,10 +233,10 @@ int SudokuGame::chooseDifficulty() {
 }
 
 void SudokuGame::startNewGame() {
-    int difficulty = chooseDifficulty();
-
+    difficultyLevel = chooseDifficulty();
+    hintsUsed = 0;
     board.clear();
-    board.createPuzzle(difficulty);
+    board.createPuzzle(difficultyLevel);
 
     gameOver = false;
     moves = 0;
@@ -244,7 +246,38 @@ void SudokuGame::startNewGame() {
     saveCurrentState();
 }
 
-void SudokuGame::congratulate() const {
+int SudokuGame::calculateScore() const {
+    double avgTime;
+    double multiplier;
+    switch (difficultyLevel) {
+        case 1: // Easy
+            avgTime = 300;
+            multiplier = 1.0;
+            break;
+        case 2: // Medium
+            avgTime = 480;
+            multiplier = 1.25;
+            break;
+        case 3: // Hard
+            avgTime = 720;
+            multiplier = 1.5;
+            break;
+        default:
+            avgTime = 500;
+            multiplier = 1.0;
+    }
+
+    int elapsed = static_cast<int>(difftime(endTime, startTime));
+    double timePenalty = std::max(0.0, (elapsed - avgTime)) * 100.0;
+    double hintPenalty = hintsUsed * 50.0;
+    double baseScore = 1000.0;
+
+    int finalScore = static_cast<int>((baseScore - timePenalty - hintPenalty) * multiplier);
+    return std::max(0, finalScore);
+}
+
+
+void SudokuGame::congratulate() {
     cout << "\n******\n";
     cout << "*                            *\n";
     cout << "  CONGRATULATIONS! YOU WIN!  \n";
@@ -264,6 +297,11 @@ void SudokuGame::congratulate() const {
         std::cout << hours << " hours, ";
     }
     cout << minutes << " minutes, and " << seconds << " seconds.\n\n";
+
+    endTime = time(nullptr);
+    int finalScore = calculateScore();
+    cout << "Hints used: " << hintsUsed << "\n";
+    cout << "Your score: " << finalScore << " points.\n";
 }
 
 // player interaction, game state transitions, screen updates
@@ -413,7 +451,7 @@ void SudokuGame::run() {
                                     // End timing
                                     auto end = std::chrono::steady_clock::now();
                                     std::chrono::duration<double> elapsed = end - start;
-
+                                    cout << "\n";
                                     cout << "Puzzle solved in " << elapsed.count() << " seconds.\n";
                                 }
                                 if (board.solve(pick)) {

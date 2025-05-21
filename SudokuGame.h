@@ -13,6 +13,9 @@ class SudokuGame {
 private:
     static const int SIZE = 9;
     static const int BOX_SIZE = 3;
+    int difficultyLevel;
+    int hintsUsed;
+    time_t endTime;
 
     SudokuBoard board;
     int savedState[SIZE][SIZE]; // For undo functionality
@@ -30,7 +33,10 @@ private:
     void displayHelp() const;
     int chooseDifficulty();
     void startNewGame();
-    void congratulate() const;
+
+    int calculateScore() const;
+
+    void congratulate();
 
 public:
     SudokuGame();
