@@ -64,4 +64,4 @@ void Cell::restoreCandidates() {
             candidates.push_back(i);
         }
     }
-}
+} 
